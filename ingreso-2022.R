@@ -18,8 +18,8 @@ source("funciones.R")
 
 
 # Obtenar datos 
-url <- "https://www.one.gob.do/media/isyjdega/base-de-datos-ingresos-de-los-gobiernos-locales-2023.xlsx"
-archivo <- descargar_archivo(url, "ingreso-2023.xlsx")
+#url <- "https://www.one.gob.do/media/isyjdega/base-de-datos-ingresos-de-los-gobiernos-locales-2023.xlsx"
+#archivo <- descargar_archivo(url, "ingreso-2023.xlsx")
 
 datos <- read_excel(archivo, sheet = 2)
 datos$PERCIBIDO <- as.numeric(datos$PERCIBIDO)
@@ -33,6 +33,6 @@ mapard <- mapard %>%
   left_join(resumen, by = c("CODREG" = "CÓD_REGIÓN"))
 
 # Grafico
-plot_devengado(mapard,"total_percibido", "Total de ingresos por Provincia", "", "")
+graficar_mapa(mapard,"total_percibido", "Total de ingresos por Provincia", "", "")
 
 

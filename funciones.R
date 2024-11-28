@@ -41,7 +41,7 @@ getMapa <- function(mapa) {
   
 }
 
-graficar_mapa  <- function(map_reg_data) {
+graficar_mapa1  <- function(map_reg_data) {
   ggplot(data = map_reg_data) +
     geom_sf(aes(fill = DEVENGADO), color = "black") +
     geom_sf_text(aes(label = ifelse(DEVENGADO >= 1e9, 
@@ -65,7 +65,7 @@ graficar_mapa  <- function(map_reg_data) {
 
 library(ggplot2)
 
-plot_devengado <- function(data, fill_var = "DEVENGADO", title = "Gastos Devengados por Región - República Dominicana", 
+graficar_mapa <- function(data, fill_var = "DEVENGADO", title = "Gastos Devengados por Región - República Dominicana", 
                            subtitle = "Montos en pesos dominicanos", 
                            caption = "Fuente: Datos de gastos de los gobiernos locales, 2023",
                            fill_low = "#fee8c8", fill_high = "#e34a33", na_fill = "grey50") {
@@ -79,7 +79,7 @@ plot_devengado <- function(data, fill_var = "DEVENGADO", title = "Gastos Devenga
                                            paste0(round(!!as.name(fill_var) / 1e3, 1), "K")))), 
                  size = 3, color = "black") +
     scale_fill_gradient(
-      name = fill_var + "(RD$)",
+      name = paste(fill_var, "(RD$)"),
       labels = scales::label_number(scale_cut = scales::cut_short_scale()), 
       low = fill_low, high = fill_high, na.value = na_fill
     ) +
