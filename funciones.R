@@ -29,3 +29,25 @@ descargar_archivo1 <- function(url, nombre_archivo) {
     message("Error en la descarga del archivo.")
   }
 }
+
+graficar_mapa  <- function(map_reg_data) {
+  ggplot(data = map_reg_data) +
+    geom_sf(aes(fill = DEVENGADO), color = "black") +
+    geom_sf_text(aes(label = ifelse(DEVENGADO >= 1e9, 
+                                    paste0(round(DEVENGADO / 1e9, 1), "B"), 
+                                    ifelse(DEVENGADO >= 1e6, 
+                                           paste0(round(DEVENGADO / 1e6, 1), "M"), 
+                                           paste0(round(DEVENGADO / 1e3, 1), "K")))), 
+                 size = 3, color = "black") +
+    scale_fill_gradient(
+      name = "Devengado (RD$)",
+      labels = scales::label_number(scale_cut = scales::cut_short_scale()), 
+      low = "#fee8c8", high = "#e34a33", na.value = "grey50"
+    ) +
+    labs(
+      title = "Gastos Devengados por Región - República Dominicana",
+      subtitle = "Montos en pesos dominicanos",
+      caption = "Fuente: Datos de gastos de los gobiernos locales, 2023"
+    ) +
+    theme_minimal()
+}
