@@ -38,57 +38,39 @@ getMapa <- function(mapa) {
   else {
     message("Mapa no se encuentra")
   }
-  
 }
 
-graficar_mapa1  <- function(map_reg_data) {
-  ggplot(data = map_reg_data) +
-    geom_sf(aes(fill = DEVENGADO), color = "black") +
-    geom_sf_text(aes(label = ifelse(DEVENGADO >= 1e9, 
-                                    paste0(round(DEVENGADO / 1e9, 1), "B"), 
-                                    ifelse(DEVENGADO >= 1e6, 
-                                           paste0(round(DEVENGADO / 1e6, 1), "M"), 
-                                           paste0(round(DEVENGADO / 1e3, 1), "K")))), 
-                 size = 3, color = "black") +
-    scale_fill_gradient(
-      name = "Devengado (RD$)",
-      labels = scales::label_number(scale_cut = scales::cut_short_scale()), 
-      low = "#fee8c8", high = "#e34a33", na.value = "grey50"
-    ) +
-    labs(
-      title = "Gastos Devengados por Región - República Dominicana",
-      subtitle = "Montos en pesos dominicanos",
-      caption = "Fuente: Datos de gastos de los gobiernos locales, 2023"
-    ) +
-    theme_minimal()
-}
 
-library(ggplot2)
-
-graficar_mapa <- function(data, fill_var = "DEVENGADO", title = "Gastos Devengados por Región - República Dominicana", 
-                           subtitle = "Montos en pesos dominicanos", 
-                           caption = "Fuente: Datos de gastos de los gobiernos locales, 2023",
-                           fill_low = "#fee8c8", fill_high = "#e34a33", na_fill = "grey50") {
-  
-  ggplot(data = data) +
+graficar_mapa <- function(data, fill_var = "DEVENGADO", title = "", 
+                          subtitle = "", 
+                          caption = "",
+                          fill_low = "#fee8c8", 
+                          fill_high = "#e34a33", 
+                          na_fill = "grey50") {
+  #Remover la palabras REGION y O METROPOLITANA
+  m <- data;
+  m$TOPONIMIA <- gsub("^REGION ", "", m$TOPONIMIA)
+  m$TOPONIMIA <- gsub(" O METROPOLITANA", "", m$TOPONIMIA)
+    
+  ggplot(data = m) +
     geom_sf(aes_string(fill = fill_var), color = "black") +
-    geom_sf_text(aes(label = ifelse(!!as.name(fill_var) >= 1e9, 
-                                    paste0(round(!!as.name(fill_var) / 1e9, 1), "B"), 
-                                    ifelse(!!as.name(fill_var) >= 1e6, 
-                                           paste0(round(!!as.name(fill_var) / 1e6, 1), "M"), 
-                                           paste0(round(!!as.name(fill_var) / 1e3, 1), "K")))), 
-                 size = 3, color = "black") +
+    geom_sf_text(
+      aes_string(label = "TOPONIMIA"), 
+      size = 4, color = "black", 
+      check_overlap = TRUE) +
     scale_fill_gradient(
       name = paste(fill_var, "(RD$)"),
-      labels = scales::label_number(scale_cut = scales::cut_short_scale()), 
+      labels = function(x) { 
+        ifelse(x >= 1e9, 
+               paste0(round(x / 1e9, 1), " Mil Millones"), 
+               ifelse(x >= 1e6, paste0(round(x / 1e6, 1), " Millones"), x)) 
+        }, 
       low = fill_low, high = fill_high, na.value = na_fill
     ) +
     labs(
       title = title,
       subtitle = subtitle,
       caption = caption
-    ) +
-    theme_minimal()
+    ) + 
+    theme_void()
 }
-
-
