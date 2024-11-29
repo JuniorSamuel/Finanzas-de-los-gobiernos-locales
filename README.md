@@ -1,7 +1,5 @@
 # Proyecto final SIG
 
-## Gastos vs Ingresos de gobiernos locales 2022 - 2023 por provincias
-
 Proyecto final de Sistema de Informacion Geograficas, comparación de los ingresos y gastos de los gobiernos locales en 2023. Se destacan las diferencias por región y los principales conceptos que impulsan las finanzas públicas, ofreciendo un análisis visual y claro de los datos más relevantes.
 
 # Funciones
